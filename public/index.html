@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="assets/style.css" />
   </head>
   <body>
+    <!-- user info -->
+    <div class="mysynth__user__info">
+      <p>id: <span id="client_id"></span></p>
+      <p>
+        name: <span id="client_name"></span>
+        <button class="mysynth__button button__small" id="edit_name">
+          edit
+        </button>
+      </p>
+    </div>
     <!-- rooms -->
     <div class="mysynth__rooms">
       <!-- <button class="mysynth__button mysynth__room" name="osc1">OSC1</button>
@@ -33,19 +43,8 @@
       <div id="pos_indicator"></div>
     </div>
 
-    <!-- user info -->
-    <div class="mysynth__user__info">
-      <p>id: <span id="client_id"></span></p>
-      <p>
-        name: <span id="client_name"></span>
-        <button class="mysynth__button button__small" id="edit_name">
-          edit
-        </button>
-      </p>
-    </div>
-
     <!-- users list -->
-    <p>all user</p>
+    <p>active users</p>
     <div class="mysynth__user__list" id="user_list">
       <div class="mysynth__user__list__entry mysynth__user__list__init">
         <p class="mysynth__user__entry">ID</p>
