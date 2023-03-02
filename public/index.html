@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <!-- rooms -->
+    <div class="mysynth__rooms">
+      <!-- <button class="mysynth__button mysynth__room" name="osc1">OSC1</button>
+      <button class="mysynth__button mysynth__room" name="osc2">OSC2</button> -->
+      <!-- <button class="mysynth__button mysynth__room" name="leave">Leave</button> -->
+      <button class="mysynth__button" name="cue" id="cue">Cue</button>
+      <button
+        class="mysynth__button mysynth__room"
+        name="leave"
+        id="leave_button"
+        style="display: none"
+      >
+        Leave
+      </button>
+      <div id="cue-info" style="display: none">
+        <p>your position:<span id="cue-pos"></span></p>
+        <p>cue length:<span id="cue-length"></span></p>
+      </div>
+    </div>
+    <!-- controller -->
+    <div class="mysynth__control" id="my_control">
+      <p>You have 1 minute to play!</p>
+      <div id="pos_indicator"></div>
+    </div>
+
+    <!-- user info -->
+    <div class="mysynth__user__info">
+      <p>id: <span id="client_id"></span></p>
+      <p>
+        name: <span id="client_name"></span>
+        <button class="mysynth__button button__small" id="edit_name">
+          edit
+        </button>
+      </p>
+    </div>
+
+    <!-- users list -->
+    <p>all user</p>
+    <div class="mysynth__user__list" id="user_list">
+      <div class="mysynth__user__list__entry mysynth__user__list__init">
+        <p class="mysynth__user__entry">ID</p>
+        <p class="mysynth__user__entry">Name</p>
+      </div>
+    </div>
+    <!-- Script -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="assets/index.js"></script>
+  </body>
+</html>

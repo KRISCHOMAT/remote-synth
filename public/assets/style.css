@@ -1,0 +1,101 @@
+html,
+* {
+  box-sizing: border-box;
+}
+
+body {
+  text-align: center;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.mysynth__control {
+  touch-action: none;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+  height: 0;
+}
+
+.mysynth__control,
+.mysynth__user__list {
+  background-color: white;
+  width: 400px;
+  border: 1px solid;
+  margin: 0 auto 0 auto;
+  transition: 1s;
+}
+
+.mysynth__rooms {
+  margin: 20px 0 20px 0;
+  text-align: center;
+}
+
+.mysynth__button {
+  border: 0;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+  width: 80px;
+  height: 40px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #4d455d;
+  color: white;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.button__small {
+  width: 35px;
+  height: 25px;
+  font-size: 0.8rem;
+}
+
+.mysynth__user__info {
+  text-align: center;
+  margin: 20px;
+}
+
+.mysynth__user__list {
+  position: relative;
+  overflow: auto;
+  max-height: 300px;
+}
+
+.mysynth__user__list__entry {
+  display: flex;
+}
+
+.mysynth__user__list__entry p {
+  margin: 0;
+}
+.mysynth__user__entry {
+  width: 50%;
+  text-align: center;
+}
+
+.mysynth__user__list__init {
+  border-bottom: 1px solid;
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+#pos_indicator {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 100%;
+  /* Created with https://www.css-gradient.com */
+  background: #ea657a;
+  background: -webkit-radial-gradient(center, #ea657a, #ffffff);
+  background: -moz-radial-gradient(center, #ea657a, #ffffff);
+  background: radial-gradient(ellipse at center, #ea657a, #ffffff);
+  transition: 0.1s;
+}
