@@ -192,7 +192,7 @@ function addUserToList(user) {
   name.classList.add("mysynth__user__entry");
   name.innerHTML = user.name;
 
-  listEntry.appendChild(id);
+  // listEntry.appendChild(id);
   listEntry.appendChild(name);
   userList.appendChild(listEntry);
 }
