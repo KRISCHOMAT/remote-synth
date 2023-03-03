@@ -4,6 +4,7 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+const playTime = 120000;
 
 const port = process.env.PORT || 3000;
 
@@ -114,7 +115,7 @@ function joinRoomIfFree(socket) {
   socket.emit("room_joined", room);
   setTimeout(() => {
     socket.emit("force_leaving");
-  }, 60000);
+  }, playTime);
   socket.broadcast
     .to("lobby")
     .emit("room_update", { room: room, isFree: false });
