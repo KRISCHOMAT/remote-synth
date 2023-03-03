@@ -8,52 +8,62 @@
     <link rel="stylesheet" href="assets/style.css" />
   </head>
   <body>
-    <!-- user info -->
-    <header>
-      <div class="mysynth__user__info">
-        <p>your id: <span id="client_id"></span></p>
-        <p>
-          name: <span id="client_name"></span>
-          <button class="mysynth__button button__small" id="edit_name">
-            edit
-          </button>
-        </p>
+    <main>
+      <!-- user info -->
+      <header>
+        <div class="mysynth__user__info">
+          <!-- <p>your id: <span id="client_id"></span></p> -->
+          <p>
+            name: <span id="client_name"></span>
+            <button class="mysynth__button button__small" id="edit_name">
+              edit
+            </button>
+          </p>
+        </div>
+        <h1 class="title">Remote-Synth</h1>
+      </header>
+      <!-- rooms -->
+      <div class="mysynth__rooms">
+        <p id="alert">Stand in line to get in!</p>
+        <button class="mysynth__button" name="cue" id="cue">Queue Up!</button>
+        <button
+          class="mysynth__button mysynth__room"
+          name="leave"
+          id="leave_button"
+          style="display: none"
+        >
+          Leave
+        </button>
+        <div id="cue-info" style="display: none">
+          <p>your position:<span id="cue-pos"></span></p>
+          <p>cue length:<span id="cue-length"></span></p>
+        </div>
       </div>
-      <h1>Remote-Synth</h1>
-    </header>
-    <!-- rooms -->
-    <div class="mysynth__rooms">
-      <p id="alert">Stand in line to get in!</p>
-      <button class="mysynth__button" name="cue" id="cue">Queue Up!</button>
-      <button
-        class="mysynth__button mysynth__room"
-        name="leave"
-        id="leave_button"
-        style="display: none"
-      >
-        Leave
-      </button>
-      <div id="cue-info" style="display: none">
-        <p>your position:<span id="cue-pos"></span></p>
-        <p>cue length:<span id="cue-length"></span></p>
+      <!-- controller -->
+      <div class="mysynth__control" id="my_control">
+        <p>You have 2 minutes to play!</p>
+        <div id="pos_indicator"></div>
       </div>
-    </div>
-    <!-- controller -->
-    <div class="mysynth__control" id="my_control">
-      <p>You have 2 minutes to play!</p>
-      <div id="pos_indicator"></div>
-    </div>
 
-    <!-- users list -->
-    <p>active users</p>
-    <div class="mysynth__user__list" id="user_list">
-      <div class="mysynth__user__list__entry mysynth__user__list__init">
-        <p class="mysynth__user__entry">ID</p>
-        <p class="mysynth__user__entry">Name</p>
+      <!-- users list -->
+      <p>users online</p>
+      <div class="mysynth__user__list" id="user_list">
+        <div class="mysynth__user__list__entry mysynth__user__list__init">
+          <!-- <p class="mysynth__user__entry">ID</p> -->
+          <p class="mysynth__user__entry">Name</p>
+        </div>
       </div>
-    </div>
-    <!-- Script -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="assets/index.js"></script>
+      <!-- Script -->
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="assets/index.js"></script>
+    </main>
+    <footer>
+      <a href="https://christian-grothe.com/datenschutz" target="_blank"
+        >Datenschutz</a
+      >
+      <a href="https://christian-grothe.com/impressum" target="_blank"
+        >Impressum</a
+      >
+    </footer>
   </body>
 </html>

@@ -1,6 +1,6 @@
 const socket = io.connect();
 const myControl = document.getElementById("my_control");
-const clientId = document.getElementById("client_id");
+// const clientId = document.getElementById("client_id");
 let currentRoom = null;
 const editNameButton = document.getElementById("edit_name");
 const clientName = document.getElementById("client_name");
@@ -154,7 +154,7 @@ socket.on("room_update", (msg) => {
 
 // Init new Client
 socket.on("init", (payload) => {
-  clientId.innerHTML = payload.id;
+  // clientId.innerHTML = payload.id;
   payload.currentUsers.forEach((user) => {
     users.set(user.id, user.name);
     addUserToList({ id: user.id, name: user.name });
@@ -184,9 +184,9 @@ function addUserToList(user) {
   listEntry.classList.add("mysynth__user__list__entry");
   listEntry.id = user.id;
 
-  const id = document.createElement("p");
-  id.classList.add("mysynth__user__entry");
-  id.innerHTML = user.id;
+  // const id = document.createElement("p");
+  // id.classList.add("mysynth__user__entry");
+  // id.innerHTML = user.id;
 
   const name = document.createElement("p");
   name.classList.add("mysynth__user__entry");

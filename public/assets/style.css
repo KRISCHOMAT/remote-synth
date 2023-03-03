@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Ubuntu+Mono&display=swap");
 :root {
   --dark: #181d31;
   --darker: #101320;
   --green: #678983;
+  --green-light: #8fada8;
   --creme: #e6ddc4;
   --border-radius: 10px;
 }
@@ -22,12 +22,33 @@ body {
   text-align: center;
 }
 
+main {
+  max-width: 800px;
+  margin: 0 auto 0 auto;
+  height: calc(100vh - 60px);
+}
+
 header {
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
 }
 
+footer {
+  background-color: var(--darker);
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.title {
+  font-family: "Ubuntu Mono", monospace;
+}
+
+a {
+  text-decoration: none;
+}
 p {
   margin: 0;
   padding: 0;
@@ -73,10 +94,16 @@ input[type="text"] {
   cursor: pointer;
   margin: 5px;
   border-radius: var(--border-radius);
+  transition: 0.3s;
+}
+
+.mysynth__button:hover {
+  background-color: var(--green-light);
 }
 
 .button__small {
   font-size: 0.8rem;
+  padding: 5px;
 }
 
 .mysynth__user__info {
@@ -105,6 +132,7 @@ input[type="text"] {
   border-bottom: 1px solid;
   position: sticky;
   top: 0;
+  background-color: var(--darker);
 }
 
 #pos_indicator {
