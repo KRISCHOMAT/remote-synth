@@ -114,7 +114,7 @@ function joinRoomIfFree(socket) {
   socket.emit("room_joined", room);
   setTimeout(() => {
     socket.emit("force_leaving");
-  }, 100000);
+  }, 60000);
   socket.broadcast
     .to("lobby")
     .emit("room_update", { room: room, isFree: false });
