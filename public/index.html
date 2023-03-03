@@ -9,21 +9,22 @@
   </head>
   <body>
     <!-- user info -->
-    <div class="mysynth__user__info">
-      <p>id: <span id="client_id"></span></p>
-      <p>
-        name: <span id="client_name"></span>
-        <button class="mysynth__button button__small" id="edit_name">
-          edit
-        </button>
-      </p>
-    </div>
+    <header>
+      <div class="mysynth__user__info">
+        <p>your id: <span id="client_id"></span></p>
+        <p>
+          name: <span id="client_name"></span>
+          <button class="mysynth__button button__small" id="edit_name">
+            edit
+          </button>
+        </p>
+      </div>
+      <h1>Remote-Synth</h1>
+    </header>
     <!-- rooms -->
     <div class="mysynth__rooms">
-      <!-- <button class="mysynth__button mysynth__room" name="osc1">OSC1</button>
-      <button class="mysynth__button mysynth__room" name="osc2">OSC2</button> -->
-      <!-- <button class="mysynth__button mysynth__room" name="leave">Leave</button> -->
-      <button class="mysynth__button" name="cue" id="cue">Cue</button>
+      <p id="alert">Stand in line to get in!</p>
+      <button class="mysynth__button" name="cue" id="cue">Queue Up!</button>
       <button
         class="mysynth__button mysynth__room"
         name="leave"

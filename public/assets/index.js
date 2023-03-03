@@ -62,6 +62,16 @@ cue.addEventListener("click", () => {
   socket.emit("cue", "join");
 });
 
+const alert = document.getElementById("alert");
+socket.on("no_synth", () => {
+  leaveButton.style.display = "none";
+  cue.style.display = "inline";
+  alert.innerHTML = "Synth is not online.";
+  setTimeout(() => {
+    alert.innerHTML = "Stand in line to get in!";
+  }, 3000);
+});
+
 // handle leave button
 leaveButton.addEventListener("click", () => {
   leaveButton.style.display = "none";
@@ -195,20 +205,3 @@ function wipeUserList() {
     }
   });
 }
-
-async function startRecording() {
-  const mediaStream = await navigator.mediaDevices.getUserMedia({
-    audio: true,
-  });
-  const mediaRecorder = new MediaRecorder(mediaStream);
-
-  mediaRecorder.addEventListener("dataavailable", (event) => {
-    const audioData = event.data;
-    // Send the audio data to the server using Socket.IO
-    socket.emit("audio", audioData);
-  });
-
-  mediaRecorder.start();
-}
-
-//startRecording();

@@ -53,6 +53,11 @@ io.on("connection", (socket) => {
   // handle Cue
   socket.on("cue", (action) => {
     if (action === "join") {
+      let isSynth = io.sockets.adapter.rooms.get("local_server");
+      if (!isSynth) {
+        socket.emit("no_synth");
+        return;
+      }
       const result = joinRoomIfFree(socket);
       if (!result) {
         socket.join("cue");
