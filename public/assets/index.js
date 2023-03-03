@@ -68,7 +68,7 @@ socket.on("no_synth", () => {
   cue.style.display = "inline";
   alert.innerHTML = "Synth is not online.";
   setTimeout(() => {
-    alert.innerHTML = "Stand in line to get in!";
+    alert.innerHTML = "Join the line to control the synth when its your turn!";
   }, 3000);
 });
 
