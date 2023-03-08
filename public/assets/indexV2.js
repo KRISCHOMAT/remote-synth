@@ -14,6 +14,7 @@ let userName = "";
 let currentRoom = "";
 let isSynthOnline = false;
 let timeout;
+const playTime = 120000;
 
 socket.emit("user_init", userName);
 
@@ -113,7 +114,7 @@ socket.on("room-joined", (room) => {
   lineInfo.style.display = "none";
   timeout = setTimeout(() => {
     socket.emit("leave-room", currentRoom);
-  }, 20000);
+  }, playTime);
 });
 
 socket.on("room-left", () => {
