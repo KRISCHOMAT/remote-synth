@@ -4,13 +4,22 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const playTime = 120000;
+let isSynthOnline = false;
+let synthId;
 
 const port = process.env.PORT || 3000;
 
 let users = new Map();
-let cue = new Array();
+let line = new Array();
 
+const rooms = {
+  roomA: "free",
+  roomB: "free",
+};
+
+/**
+ * REST
+ */
 app.use(express.static("public"));
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "index.html");
@@ -20,118 +29,126 @@ server.listen(port, () => {
   console.log(`listening on *:${port}`);
 });
 
+/**
+ * Socket connections
+ */
 io.on("connection", (socket) => {
+  socket.on("disconnect", () => {
+    if (socket.id === synthId) {
+      isSynthOnline = false;
+      socket.to("lobby").emit("synth_status", isSynthOnline);
+      return;
+    }
+    const user = users.get(socket.id);
+    if (!user) return;
+    if (user.room !== "") {
+      userLeavesRoom(socket, user.room);
+    } else {
+      const index = line.indexOf(socket.id);
+      if (index > -1) {
+        line.splice(index, 1);
+      }
+      line.forEach((id, i) => {
+        const socket = io.sockets.sockets.get(id);
+        socket.emit("line-update", { pos: i + 1, length: line.length });
+      });
+    }
+    users.delete(socket.id);
+  });
+
   socket.on("start_local_server", () => {
     socket.join("local_server");
-  });
-  // init
-  const usersArray = Array.from(users.entries()).map(([id, name]) => ({
-    id,
-    name,
-  }));
-  socket.join("lobby");
-  socket.emit("init", {
-    id: socket.id,
-    currentUsers: usersArray,
-  });
-  users.set(socket.id, undefined);
-  socket.to("lobby").emit("user_list_update", { id: socket.id }); // send id of new user to clients
-
-  // user is closing browser
-  socket.on("disconnect", (data) => {
-    users.delete(socket.id);
-    socket.to("lobby").emit("user_left", socket.id);
-    handleCue();
+    synthId = socket.id;
+    isSynthOnline = true;
+    socket.to("lobby").emit("synth_status", isSynthOnline);
   });
 
-  // user is changing name
-  socket.on("change_name", (name) => {
-    console.log(name);
-    users.set(socket.id, name);
-    socket.to("lobby").emit("user_list_update", { id: socket.id, name });
+  socket.on("user_info", (data) => {
+    users.set(socket.id, { name: data.userName, room: data.currentRoom });
   });
 
-  // handle Cue
-  socket.on("cue", (action) => {
-    if (action === "join") {
-      let isSynth = io.sockets.adapter.rooms.get("local_server");
-      if (!isSynth) {
-        socket.emit("no_synth");
-        return;
-      }
-      const result = joinRoomIfFree(socket);
-      if (!result) {
-        socket.join("cue");
-        cue.push(socket.id);
-        socket.emit("cue_init", cue.length);
-        socket.to("cue").emit("cue_update", cue.length);
-      }
-    } else if (action === "leave") {
-      cue = cue.filter((id) => id !== socket.id);
-      cue.forEach((id, i) => {
-        const socket = io.sockets.sockets.get(id);
-        socket.emit("cue_init", i + 1);
-      });
-      socket.to("cue").emit("cue_update", cue.length);
-    }
-  });
-
-  // user leaves room
-  socket.on("leave_room", (roomName) => {
-    console.log("user left room");
-    socket.leave(roomName);
-    handleCue();
+  socket.on("user_init", (name) => {
+    users.set(socket.id, { name: name, room: "" });
+    socket.join("lobby");
+    socket.emit("synth_status", isSynthOnline);
+    socket.emit("room_status", rooms);
   });
 
   // send data to teensy
-  socket.on("osc1", (coords) => {
+  socket.on("roomA", (coords) => {
     socket.to("local_server").emit("dataA", coords);
   });
 
-  socket.on("osc2", (coords) => {
+  socket.on("roomB", (coords) => {
     socket.to("local_server").emit("dataB", coords);
   });
 
-  socket.on("audio", (data) => {
-    console.log(data);
+  socket.on("leave-room", (room) => {
+    const user = users.get(socket.id);
+    userLeavesRoom(socket, room);
+  });
+
+  socket.on("leave-line", () => {
+    socket.leave("line");
+    const index = line.indexOf(socket.id);
+    if (index > -1) {
+      line.splice(index, 1);
+    }
+    line.forEach((id, i) => {
+      const socket = io.sockets.sockets.get(id);
+      socket.emit("line-update", { pos: i + 1, length: line.length });
+    });
+  });
+
+  socket.on("join-line", () => {
+    const user = users.get(socket.id);
+    if (rooms.roomA === "free") {
+      user.room = "roomA";
+      rooms.roomA = user.name;
+      socket.leave("line");
+      socket.emit("room-joined", "roomA");
+      io.to("lobby").emit("room_status", rooms);
+
+      return;
+    } else if (rooms.roomB === "free") {
+      user.room = "roomB";
+      rooms.roomB = user.name;
+      socket.leave("line");
+      socket.emit("room-joined", "roomB");
+      io.to("lobby").emit("room_status", rooms);
+
+      return;
+    }
+    line.push(socket.id);
+    socket.join("line");
+    socket.emit("line-joined", line.length);
+    socket.broadcast.to("line").emit("user-joined-line", line.length);
   });
 });
 
-function joinRoomIfFree(socket) {
-  let room = "osc1";
-  let roomExists = io.sockets.adapter.rooms.get(room);
-  if (roomExists) {
-    room = "osc2";
-    roomExists = io.sockets.adapter.rooms.get(room);
-  }
-  if (roomExists) {
-    console.log("all rooms occupied");
-    return false;
+function userLeavesRoom(socket, room) {
+  socket.emit("room-left");
+  const user = users.get(socket.id);
+  if (!user) return;
+  user.room = "";
+
+  if (line.length === 0) {
+    rooms[room] = "free";
+    io.to("lobby").emit("room_status", rooms);
+    return;
   }
 
-  console.log(`${room} is free`);
-  socket.leave("cue");
-  socket.join(room);
-  socket.emit("room_joined", room);
-  setTimeout(() => {
-    socket.emit("force_leaving");
-  }, playTime);
-  socket.broadcast
-    .to("lobby")
-    .emit("room_update", { room: room, isFree: false });
-  return true;
-}
+  const next = line.shift();
+  const nextSocket = io.sockets.sockets.get(next);
+  nextSocket.emit("room-joined", room);
 
-function handleCue() {
-  if (cue.length === 0) return;
-  const next = cue.shift();
-  const socket = io.sockets.sockets.get(next);
-  const result = joinRoomIfFree(socket);
-  if (result) {
-    cue.forEach((id, i) => {
-      const socket = io.sockets.sockets.get(id);
-      socket.emit("cue_init", i + 1);
-    });
-    socket.to("cue").emit("cue_update", cue.length);
-  }
+  const nextUser = users.get(nextSocket.id);
+  nextUser.room = room;
+  rooms[room] = nextUser.name;
+  io.to("lobby").emit("room_status", rooms);
+
+  line.forEach((id, i) => {
+    const socket = io.sockets.sockets.get(id);
+    socket.emit("line-update", { pos: i + 1, length: line.length });
+  });
 }

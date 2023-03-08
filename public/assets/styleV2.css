@@ -11,7 +11,6 @@
 html,
 * {
   box-sizing: border-box;
-  background-color: var(--dark);
   color: var(--creme);
   font-family: "Open Sans", sans-serif;
   margin: 0;
@@ -19,19 +18,27 @@ html,
 }
 
 body {
+  background-color: var(--dark);
   text-align: center;
-}
-
-main {
-  max-width: 800px;
-  margin: 0 auto 0 auto;
-  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  padding: 0 10px;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   padding: 10px 20px;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto 0 auto;
+}
+main {
+  max-width: 800px;
+  width: 100%;
+  flex-grow: 1;
 }
 
 footer {
@@ -41,13 +48,16 @@ footer {
   align-items: center;
   justify-content: center;
   gap: 20px;
+  width: 100vw;
 }
+
 .title {
   font-family: "Ubuntu Mono", monospace;
 }
 
 a {
   text-decoration: none;
+  background-color: transparent;
 }
 p {
   margin: 0;
@@ -62,6 +72,9 @@ input[type="text"] {
   border-radius: var(--border-radius);
 }
 
+input[type="text"]:focus {
+  outline: 0;
+}
 .mysynth__control {
   touch-action: none;
   position: relative;
@@ -73,15 +86,24 @@ input[type="text"] {
 .mysynth__control,
 .mysynth__user__list {
   background-color: var(--green);
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   border: 1px solid;
   margin: 0 auto 0 auto;
   transition: 1s;
 }
 
-.mysynth__rooms {
+.mysynth__container {
   margin: 20px 0 20px 0;
   text-align: center;
+}
+
+.mysynth__container__row {
+  display: flex;
+  align-items: center;
+  margin: 0 auto 0 auto;
+  justify-content: space-around;
+  max-width: 400px;
 }
 
 .mysynth__button {
@@ -146,4 +168,21 @@ input[type="text"] {
   /* Created with https://www.css-gradient.com */
   background: var(--creme);
   transition: 0.1s;
+}
+
+#modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: var(--darker);
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+#line-info {
+  margin: 5px;
 }

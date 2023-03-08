@@ -5,59 +5,61 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Remote Synth</title>
-    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/styleV2.css" />
   </head>
   <body>
+    <!-- Modal if no name in storage -->
+    <div id="modal">
+      <h2>What is your name?</h2>
+      <input type="text" name="name" id="name" />
+      <button class="mysynth__button" name="name" id="modal_button">
+        Set Name
+      </button>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <div class="mysynth__user__info">
+        <p>
+          name: <span id="client_name"></span>
+          <button class="mysynth__button button__small" id="edit_name">
+            edit
+          </button>
+        </p>
+      </div>
+      <h1 class="title">Remote-Synth</h1>
+    </header>
+
     <main>
-      <!-- user info -->
-      <header>
-        <div class="mysynth__user__info">
-          <!-- <p>your id: <span id="client_id"></span></p> -->
-          <p>
-            name: <span id="client_name"></span>
-            <button class="mysynth__button button__small" id="edit_name">
-              edit
-            </button>
-          </p>
-        </div>
-        <h1 class="title">Remote-Synth</h1>
-      </header>
-      <!-- rooms -->
-      <div class="mysynth__rooms">
-        <p id="alert">Join the line to control the synth when its your turn!</p>
-        <button class="mysynth__button" name="cue" id="cue">
-          Join the Line
-        </button>
+      <!-- Info -->
+      <div class="mysynth__container">
+        <p id="alert"></p>
+        <button class="mysynth__button" id="join-button">Join the Line</button>
         <button
           class="mysynth__button mysynth__room"
           name="leave"
-          id="leave_button"
+          id="leave-button"
           style="display: none"
         >
           Leave
         </button>
-        <div id="cue-info" style="display: none">
-          <p>your position:<span id="cue-pos"></span></p>
-          <p>cue length:<span id="cue-length"></span></p>
+        <!-- Cue Info -->
+        <div id="line-info" style="display: none">
+          <p>Your Position:<span id="line-pos"></span></p>
+          <p>Line Length:<span id="line-length"></span></p>
+        </div>
+        <!-- General Info -->
+        <div class="mysynth__container mysynth__container__row">
+          <p>Synth Status: <span id="synth-status"></span></p>
+          <p>Room A: <span id="roomA"></span></p>
+          <p>Room B: <span id="roomB"></span></p>
         </div>
       </div>
-      <!-- controller -->
+      <!-- Controller -->
       <div class="mysynth__control" id="my_control">
         <p>You have 2 minutes to play!</p>
         <div id="pos_indicator"></div>
       </div>
-
-      <!-- users list -->
-      <p>users online</p>
-      <div class="mysynth__user__list" id="user_list">
-        <div class="mysynth__user__list__entry mysynth__user__list__init">
-          <!-- <p class="mysynth__user__entry">ID</p> -->
-          <p class="mysynth__user__entry">Name</p>
-        </div>
-      </div>
-      <!-- Script -->
-      <script src="/socket.io/socket.io.js"></script>
-      <script src="assets/index.js"></script>
     </main>
     <footer>
       <a href="https://christian-grothe.com/datenschutz" target="_blank"
@@ -67,5 +69,8 @@
         >Impressum</a
       >
     </footer>
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="assets/indexV2.js"></script>
   </body>
 </html>
